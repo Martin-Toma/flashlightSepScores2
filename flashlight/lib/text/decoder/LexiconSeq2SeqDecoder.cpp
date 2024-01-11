@@ -15,12 +15,17 @@
 
 #include "flashlight/lib/text/decoder/LexiconSeq2SeqDecoder.h"
 
+#include <iostream>
+
 namespace fl {
 namespace lib {
 namespace text {
 
 void LexiconSeq2SeqDecoder::decodeStep(const float* emissions, int T, int N) {
   // Extend hyp_ buffer
+  std::ostream& os = std::cout;
+  os << "seq something ..." << std::endl;
+
   if (hyp_.size() < maxOutputLength_ + 2) {
     for (int i = hyp_.size(); i < maxOutputLength_ + 2; i++) {
       hyp_.emplace(i, std::vector<LexiconSeq2SeqDecoderState>());
