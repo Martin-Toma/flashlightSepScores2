@@ -64,6 +64,16 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
       const float lexMaxScore =
           prevLex == lexicon_->getRoot() ? 0 : prevLex->maxScore;
 
+      ////////////////////////////////////////////////////////////////
+        const char* filename = "output.txt"; // Default filename
+        // Open the file in append mode
+        std::ofstream outFile(filename, std::ios::app);
+        bool can_write = outFile.is_open();
+        if (!outFile.is_open()) {
+            std::cerr << "Error opening file" << std::endl;
+        }
+        ////////////////////////////////////////////////////////////////
+
       /* (1) Try children */
       for (int r = 0; r < std::min(opt_.beamSizeToken, N); ++r) {
         int n = idx[r];
@@ -79,21 +89,15 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         }
         double score = prevHyp.score + emittingModelScore;
         ////////////////////////////////////////////////////////////////
-        const char* filename = "output.txt"; // Default filename
-        // Open the file in append mode
-        std::ofstream outFile(filename, std::ios::app);
-
-        if (!outFile.is_open()) {
-            std::cerr << "Error opening file" << std::endl;
-        }
-        else{
-          // Append content to the file
-          outFile << score << " \n\r" << std::endl;         
-
-        }
+        // Append content to the file
+        if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " \n" << std::endl;
         ////////////////////////////////////////////////////////////////
         if (n == sil_) {
             score += opt_.silScore;
+            ///////////////////////////////////////////////////////////////////
+            if(can_write)  outFile << "+ sil " << opt_.silScore << " \n" << std::endl;
+            if(can_write)  outFile << "score now " << score << " \n" << std::endl;
+            ///////////////////////////////////////////////////////////////////
         }
         LMStatePtr lmState;
         double lmScore = 0.;
@@ -111,6 +115,9 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
             if (!isLmToken_) {
               lmState = prevHyp.lmState;
               lmScore = lex->maxScore - lexMaxScore;
+              ///////////////////////////////////////////////////////////////////
+              if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
+              ///////////////////////////////////////////////////////////////////
             }
             candidatesAdd(
                 candidates_,
@@ -144,6 +151,9 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
             auto lmStateScorePair = lm_->score(prevHyp.lmState, label);
             lmState = lmStateScorePair.first;
             lmScore = lmStateScorePair.second - lexMaxScore;
+            ///////////////////////////////////////////////////////////////////
+            if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
+            ///////////////////////////////////////////////////////////////////
           }
           candidatesAdd(
               candidates_,
@@ -166,6 +176,9 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
             auto lmStateScorePair = lm_->score(prevHyp.lmState, unk_);
             lmState = lmStateScorePair.first;
             lmScore = lmStateScorePair.second - lexMaxScore;
+            ///////////////////////////////////////////////////////////////////
+            if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
+            ///////////////////////////////////////////////////////////////////
           }
           candidatesAdd(
               candidates_,
@@ -195,6 +208,10 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         double score = prevHyp.score + emittingModelScore;
         if (n == sil_) {
           score += opt_.silScore;
+          ///////////////////////////////////////////////////////////////////
+          if(can_write)  outFile << "+ sil " << opt_.silScore << " \n" << std::endl;
+          if(can_write)  outFile << "score now " << score << " \n" << std::endl;
+          ///////////////////////////////////////////////////////////////////
         }
 
         candidatesAdd(
