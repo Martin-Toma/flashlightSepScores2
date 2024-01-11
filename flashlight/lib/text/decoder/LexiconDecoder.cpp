@@ -28,7 +28,7 @@ void LexiconDecoder::decodeBegin() {
   hyp_[0].emplace_back(
       0.0, lm_->start(false), lexicon_->getRoot(), nullptr, sil_, -1);
   nDecodedFrames_ = 0;
-  nPrunedFrames_ = 0;
+  nPrunedFrames_ = 0; 
 }
 
 void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
