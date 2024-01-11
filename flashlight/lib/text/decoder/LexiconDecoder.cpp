@@ -12,9 +12,11 @@
 #include <numeric>
 #include <unordered_map>
 
-#include "flashlight/lib/text/decoder/LexiconDecoder.h"
-
 #include <iostream>
+#include <fstream>
+
+
+#include "flashlight/lib/text/decoder/LexiconDecoder.h"
 
 namespace fl {
 namespace lib {
@@ -76,10 +78,23 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
           emittingModelScore += transitions_[n * N + prevIdx];
         }
         double score = prevHyp.score + emittingModelScore;
-        if (n == sil_) {
-          score += opt_.silScore;
-        }
+        ////////////////////////////////////////////////////////////////
+        const char* filename = "output.txt"; // Default filename
+        // Open the file in append mode
+        std::ofstream outFile(filename, std::ios::app);
 
+        if (!outFile.is_open()) {
+            std::cerr << "Error opening file" << std::endl;
+        }
+        else{
+          // Append content to the file
+          outFile << score << " \n\r" << std::endl;         
+
+        }
+        ////////////////////////////////////////////////////////////////
+        if (n == sil_) {
+            score += opt_.silScore;
+        }
         LMStatePtr lmState;
         double lmScore = 0.;
 
