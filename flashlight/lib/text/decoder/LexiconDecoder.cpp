@@ -81,11 +81,17 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         if (iter == prevLex->children.end()) {
           continue;
         }
+        ////////////////////////////////////////////////////////////////
+        if(can_write)  outFile << "Try children \n" << std::endl;
+        ////////////////////////////////////////////////////////////////
         const TrieNodePtr& lex = iter->second;
         double emittingModelScore = emissions[t * N + n];
         if (nDecodedFrames_ + t > 0 &&
             opt_.criterionType == CriterionType::ASG) {
           emittingModelScore += transitions_[n * N + prevIdx];
+        ////////////////////////////////////////////////////////////////
+          if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
+        ////////////////////////////////////////////////////////////////
         }
         double score = prevHyp.score + emittingModelScore;
         ////////////////////////////////////////////////////////////////
@@ -201,9 +207,15 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
           prevLex == lexicon_->getRoot()) {
         int n = prevLex == lexicon_->getRoot() ? sil_ : prevIdx;
         double emittingModelScore = emissions[t * N + n];
+        ////////////////////////////////////////////////////////////////
+        if(can_write)  outFile << " Try same lexicon node \n" << std::endl;
+        ////////////////////////////////////////////////////////////////
         if (nDecodedFrames_ + t > 0 &&
             opt_.criterionType == CriterionType::ASG) {
           emittingModelScore += transitions_[n * N + prevIdx];
+          ////////////////////////////////////////////////////////////////
+          if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
+         ////////////////////////////////////////////////////////////////
         }
         double score = prevHyp.score + emittingModelScore;
         if (n == sil_) {
@@ -233,6 +245,11 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
       if (opt_.criterionType == CriterionType::CTC) {
         int n = blank_;
         double emittingModelScore = emissions[t * N + n];
+
+        ////////////////////////////////////////////////////////////////
+          if(can_write)  outFile << "emittingModelScore " << emittingModelScore << "CTC only \n" << std::endl;
+        ////////////////////////////////////////////////////////////////
+
         candidatesAdd(
             candidates_,
             candidatesBestScore_,
