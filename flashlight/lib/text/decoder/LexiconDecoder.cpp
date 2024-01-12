@@ -215,7 +215,9 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
           emittingModelScore += transitions_[n * N + prevIdx];
           ////////////////////////////////////////////////////////////////
           if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
-         ////////////////////////////////////////////////////////////////
+          if(can_write)  outFile << "prevHyp.emittingModelScore " << prevHyp.emittingModelScore << "\n" << std::endl;
+          if(can_write)  outFile << "prevHyp.score " <<  prevHyp.score << "\n" << std::endl;
+          ////////////////////////////////////////////////////////////////
         }
         double score = prevHyp.score + emittingModelScore;
         if (n == sil_) {
@@ -247,7 +249,10 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         double emittingModelScore = emissions[t * N + n];
 
         ////////////////////////////////////////////////////////////////
-          if(can_write)  outFile << "emittingModelScore " << emittingModelScore << "CTC only \n" << std::endl;
+        if(can_write)  outFile << "CTC only \n" << std::endl;
+        if(can_write)  outFile << "emittingModelScore " << emittingModelScore << "\n" << std::endl;
+        if(can_write)  outFile << "prevHyp.emittingModelScore " << prevHyp.emittingModelScore << "\n" << std::endl;
+        if(can_write)  outFile << "prevHyp.score " <<  prevHyp.score << "\n" << std::endl;
         ////////////////////////////////////////////////////////////////
 
         candidatesAdd(
