@@ -1,3 +1,10 @@
+# Flashlight Text: Fast, Lightweight Utilities for Text with LexiconDecoder progress printing to file 
+
+Added output to output.txt file in LexiconDecoder.cpp
+
+Look at this colab notebook, to see how to install and use it: https://colab.research.google.com/drive/1yw3TvicrbisG2AAhTlDTXN5OPWFwGTOj?usp=sharing
+
+Original README.md text:
 # Flashlight Text: Fast, Lightweight Utilities for Text
 
 [**Quickstart**](#quickstart)
