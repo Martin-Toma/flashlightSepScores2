@@ -4,6 +4,8 @@ Added output to output.txt file in LexiconDecoder.cpp
 
 Look at this colab notebook, to see how to install and use it: https://colab.research.google.com/drive/1yw3TvicrbisG2AAhTlDTXN5OPWFwGTOj?usp=sharing
 
+Example of output from the notebook is in output.zip
+
 Original README.md text:
 # Flashlight Text: Fast, Lightweight Utilities for Text
 
