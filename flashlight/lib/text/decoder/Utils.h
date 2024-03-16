@@ -273,7 +273,7 @@ std::vector<DecodeResult> getAllHypothesis(
     res[r] = getHypothesis(node, finalFrame);
     //////////////////////////////////////////////////////////////////
     if(can_write) {
-      outFile << "Hyp " << r << " emmit score " << res[r].emittingModelScore << " lm score " << res[r].lmScore << "return score" << res[r].score << "\n" << std::endl;
+      outFile << "Hyp " << r << " emmit score " << res[r].emittingModelScore << " lm score " << res[r].lmScore << "return score" << res[r].score << std::endl;
     }
     //////////////////////////////////////////////////////////////////
   }
