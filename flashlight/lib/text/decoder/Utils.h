@@ -16,6 +16,9 @@
 #include <utility>
 #include <vector>
 
+#include <iostream>
+#include <fstream>
+
 #include "flashlight/lib/text/decoder/lm/LM.h"
 
 namespace fl {
