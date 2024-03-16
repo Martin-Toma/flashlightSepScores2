@@ -65,6 +65,7 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
           prevLex == lexicon_->getRoot() ? 0 : prevLex->maxScore;
 
       ////////////////////////////////////////////////////////////////
+      /*
         const char* filename = "output.txt"; // Default filename
         // Open the file in append mode
         std::ofstream outFile(filename, std::ios::app);
@@ -72,6 +73,7 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         if (!outFile.is_open()) {
             std::cerr << "Error opening file" << std::endl;
         }
+        */
         ////////////////////////////////////////////////////////////////
 
       /* (1) Try children */
@@ -82,7 +84,7 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
           continue;
         }
         ////////////////////////////////////////////////////////////////
-        if(can_write)  outFile << "Try children \n" << std::endl;
+        //if(can_write)  outFile << "Try children \n" << std::endl;
         ////////////////////////////////////////////////////////////////
         const TrieNodePtr& lex = iter->second;
         double emittingModelScore = emissions[t * N + n];
@@ -90,19 +92,19 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
             opt_.criterionType == CriterionType::ASG) {
           emittingModelScore += transitions_[n * N + prevIdx];
         ////////////////////////////////////////////////////////////////
-          if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
+        //if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
         ////////////////////////////////////////////////////////////////
         }
         double score = prevHyp.score + emittingModelScore;
         ////////////////////////////////////////////////////////////////
         // Append content to the file
-        if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " \n" << std::endl;
+        //if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " \n" << std::endl;
         ////////////////////////////////////////////////////////////////
         if (n == sil_) {
             score += opt_.silScore;
             ///////////////////////////////////////////////////////////////////
-            if(can_write)  outFile << "+ sil " << opt_.silScore << " \n" << std::endl;
-            if(can_write)  outFile << "score now " << score << " \n" << std::endl;
+            //if(can_write)  outFile << "+ sil " << opt_.silScore << " \n" << std::endl;
+            //if(can_write)  outFile << "score now " << score << " \n" << std::endl;
             ///////////////////////////////////////////////////////////////////
         }
         LMStatePtr lmState;
@@ -122,7 +124,7 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
               lmState = prevHyp.lmState;
               lmScore = lex->maxScore - lexMaxScore;
               ///////////////////////////////////////////////////////////////////
-              if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
+              //if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
               ///////////////////////////////////////////////////////////////////
             }
             candidatesAdd(
@@ -158,7 +160,7 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
             lmState = lmStateScorePair.first;
             lmScore = lmStateScorePair.second - lexMaxScore;
             ///////////////////////////////////////////////////////////////////
-            if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
+            //if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
             ///////////////////////////////////////////////////////////////////
           }
           candidatesAdd(
@@ -183,7 +185,7 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
             lmState = lmStateScorePair.first;
             lmScore = lmStateScorePair.second - lexMaxScore;
             ///////////////////////////////////////////////////////////////////
-            if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
+            //if(can_write)  outFile << "lmScore " << lmScore << " prevhyp LM score:" << prevHyp.lmScore << " \n" << std::endl;
             ///////////////////////////////////////////////////////////////////
           }
           candidatesAdd(
@@ -208,23 +210,23 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         int n = prevLex == lexicon_->getRoot() ? sil_ : prevIdx;
         double emittingModelScore = emissions[t * N + n];
         ////////////////////////////////////////////////////////////////
-        if(can_write)  outFile << " Try same lexicon node \n" << std::endl;
+        //if(can_write)  outFile << " Try same lexicon node \n" << std::endl;
         ////////////////////////////////////////////////////////////////
         if (nDecodedFrames_ + t > 0 &&
             opt_.criterionType == CriterionType::ASG) {
           emittingModelScore += transitions_[n * N + prevIdx];
           ////////////////////////////////////////////////////////////////
-          if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
-          if(can_write)  outFile << "prevHyp.emittingModelScore " << prevHyp.emittingModelScore << "\n" << std::endl;
-          if(can_write)  outFile << "prevHyp.score " <<  prevHyp.score << "\n" << std::endl;
+          //if(can_write)  outFile << "emittingModelScore " << emittingModelScore << " added transition "<<  transitions_[n * N + prevIdx] << "\n" << std::endl;
+          //if(can_write)  outFile << "prevHyp.emittingModelScore " << prevHyp.emittingModelScore << "\n" << std::endl;
+          //if(can_write)  outFile << "prevHyp.score " <<  prevHyp.score << "\n" << std::endl;
           ////////////////////////////////////////////////////////////////
         }
         double score = prevHyp.score + emittingModelScore;
         if (n == sil_) {
           score += opt_.silScore;
           ///////////////////////////////////////////////////////////////////
-          if(can_write)  outFile << "+ sil " << opt_.silScore << " \n" << std::endl;
-          if(can_write)  outFile << "score now " << score << " \n" << std::endl;
+          //if(can_write)  outFile << "+ sil " << opt_.silScore << " \n" << std::endl;
+          //if(can_write)  outFile << "score now " << score << " \n" << std::endl;
           ///////////////////////////////////////////////////////////////////
         }
 
@@ -249,10 +251,10 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
         double emittingModelScore = emissions[t * N + n];
 
         ////////////////////////////////////////////////////////////////
-        if(can_write)  outFile << "CTC only \n" << std::endl;
-        if(can_write)  outFile << "emittingModelScore " << emittingModelScore << "\n" << std::endl;
-        if(can_write)  outFile << "prevHyp.emittingModelScore " << prevHyp.emittingModelScore << "\n" << std::endl;
-        if(can_write)  outFile << "prevHyp.score " <<  prevHyp.score << "\n" << std::endl;
+        //if(can_write)  outFile << "CTC only \n" << std::endl;
+        //if(can_write)  outFile << "emittingModelScore " << emittingModelScore << "\n" << std::endl;
+        //if(can_write)  outFile << "prevHyp.emittingModelScore " << prevHyp.emittingModelScore << "\n" << std::endl;
+        //if(can_write)  outFile << "prevHyp.score " <<  prevHyp.score << "\n" << std::endl;
         ////////////////////////////////////////////////////////////////
 
         candidatesAdd(

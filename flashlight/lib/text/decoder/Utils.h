@@ -256,10 +256,23 @@ std::vector<DecodeResult> getAllHypothesis(
   int nHyp = finalHyps.size();
 
   std::vector<DecodeResult> res(nHyp);
-
+  //////////////////////////////////////////////////////////////////
+  const char* filename = "output.txt"; // Default filename
+  // Open the file in append mode
+  std::ofstream outFile(filename, std::ios::app);
+  bool can_write = outFile.is_open();
+  if (!outFile.is_open()) {
+    std::cerr << "Error opening file" << std::endl;
+  }
+  //////////////////////////////////////////////////////////////////
   for (int r = 0; r < nHyp; r++) {
     const DecoderState* node = &finalHyps[r];
     res[r] = getHypothesis(node, finalFrame);
+    //////////////////////////////////////////////////////////////////
+    if(can_write) {
+      outFile << "Hyp " << r << " emmit score " << res[r].emittingModelScore << " lm score " << res[r].lmScore << "return score" << res[r].score << "\n" << std::endl;
+    }
+    //////////////////////////////////////////////////////////////////
   }
 
   return res;
