@@ -261,7 +261,7 @@ std::vector<DecodeResult> getAllHypothesis(
   std::vector<DecodeResult> res(nHyp);
   //////////////////////////////////////////////////////////////////
   const char* filename = "separated_scores.csv"; // Default filename
-  // Open the file in append mode
+  // open the file in append mode
   std::ofstream outFile(filename, std::ios::app);
   bool can_write = outFile.is_open();
   if (!outFile.is_open()) {
@@ -278,6 +278,8 @@ std::vector<DecodeResult> getAllHypothesis(
     }
     //////////////////////////////////////////////////////////////////
   }
+  // close file
+  outFile.close();
 
   return res;
 }
