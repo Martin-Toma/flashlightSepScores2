@@ -260,7 +260,7 @@ std::vector<DecodeResult> getAllHypothesis(
 
   std::vector<DecodeResult> res(nHyp);
   //////////////////////////////////////////////////////////////////
-  const char* filename = "output.txt"; // Default filename
+  const char* filename = "separated_scores.csv"; // Default filename
   // Open the file in append mode
   std::ofstream outFile(filename, std::ios::app);
   bool can_write = outFile.is_open();
@@ -273,7 +273,8 @@ std::vector<DecodeResult> getAllHypothesis(
     res[r] = getHypothesis(node, finalFrame);
     //////////////////////////////////////////////////////////////////
     if(can_write) {
-      outFile << "Hyp " << r << " emmit score " << res[r].emittingModelScore << " lm score " << res[r].lmScore << "return score" << res[r].score << std::endl;
+      //outFile << "Hyp " << r << " emmit score " << res[r].emittingModelScore << " lm score " << res[r].lmScore << "return score" << res[r].score << std::endl;
+      outFile << r << " " << res[r].emittingModelScore<< " " << res[r].lmScore << " " << res[r].score << std::endl;
     }
     //////////////////////////////////////////////////////////////////
   }
