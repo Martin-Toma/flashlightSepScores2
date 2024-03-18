@@ -35,8 +35,8 @@ void LexiconDecoder::decodeBegin() {
 
 void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
   int startFrame = nDecodedFrames_ - nPrunedFrames_;
-  std::ostream& os = std::cout;
-  os << "something ..." << std::endl;
+  //std::ostream& os = std::cout;
+  //os << "something ..." << std::endl;
   // Extend hyp_ buffer
   if (hyp_.size() < startFrame + T + 2) {
     for (int i = hyp_.size(); i < startFrame + T + 2; i++) {
